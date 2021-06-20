@@ -3,6 +3,7 @@ import Navbar from  './components/navbar'
 import Product from  './components/product';
 import ProductDetail from './components/product/ProductDetail';
 import Cart from  './components/cart';
+import Checkout from './components/checkout/Checkout';
 
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
      <Product/>
      <ProductDetail />
      <Cart />
+     <Checkout/>
     </div>
   );
 }

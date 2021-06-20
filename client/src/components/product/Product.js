@@ -81,7 +81,7 @@ const Product = () => {
 
   return (
       <div>
-        <Typography variant="h1" component="h2"> Products</Typography>
+        {/* <Typography variant="h1" component="h2"> Products</Typography> */}
         <Grid
             container
             spacing={4}

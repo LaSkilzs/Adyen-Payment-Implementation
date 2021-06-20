@@ -12,7 +12,7 @@ const TAX_RATE = 0.07;
 
 const useStyles = makeStyles({
   table: {
-    maxWidth: 1000,
+    minWidth: 100,
   },
 });
 
@@ -34,16 +34,16 @@ function subtotal(items) {
 }
 
 const rows = [
-  createRow('Paperclips (Box)', 1, 14.99),
-  createRow('Paper (Case)', 1, 45.99),
-  createRow('Waste Basket', 1, 17.99),
+  createRow('Paperclips (Box)', 100, 1.15),
+  createRow('Paper (Case)', 10, 45.99),
+  createRow('Waste Basket', 2, 17.99),
 ];
 
 const invoiceSubtotal = subtotal(rows);
 const invoiceTaxes = TAX_RATE * invoiceSubtotal;
 const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
-export default function Cart() {
+export default function Summary() {
   const classes = useStyles();
 
   return (
@@ -51,15 +51,7 @@ export default function Cart() {
       <Table className={classes.table} aria-label="spanning table">
         <TableHead>
           <TableRow>
-            <TableCell align="center" colSpan={3}>
-              Details
-            </TableCell>
-            <TableCell align="right">Price</TableCell>
-          </TableRow>
-          <TableRow>
             <TableCell>Desc</TableCell>
-            <TableCell align="right">Qty.</TableCell>
-            <TableCell align="right"></TableCell>
             <TableCell align="right">Sum</TableCell>
           </TableRow>
         </TableHead>
@@ -67,30 +59,15 @@ export default function Cart() {
           {rows.map((row) => (
             <TableRow key={row.desc}>
               <TableCell>{row.desc}</TableCell>
-              <TableCell align="right">{row.qty}</TableCell>
-              <TableCell align="right"></TableCell>
               <TableCell align="right">{ccyFormat(row.price)}</TableCell>
             </TableRow>
           ))}
-
-          <TableRow>
-            <TableCell rowSpan={3} />
-            <TableCell colSpan={2}>Subtotal</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Tax</TableCell>
-            <TableCell align="right">{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
-          </TableRow>
           <TableRow>
             <TableCell colSpan={2}>Total</TableCell>
-            <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
+            <TableCell align="left">{ccyFormat(invoiceTotal)}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
   );
 }
-
-
