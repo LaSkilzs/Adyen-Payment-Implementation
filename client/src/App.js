@@ -1,18 +1,26 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import Navbar from  './components/navbar'
-import Product from  './components/product';
-import ProductDetail from './components/product/ProductDetail';
-import Cart from  './components/cart';
-
+import routes from './routes/Routes';
+import NoMatch from './routes/NoMatch';
 
 const App = () => {
   return (
-    <div className="App">
-     <h1>Hello World</h1>
-     <Navbar/>
-     <Product/>
-     <ProductDetail />
-     <Cart />
+    <div>
+        <Navbar/>
+      <Switch>
+        {routes.map(({path, exact, component: Component, ...rest}) =>(
+          <Route
+            key={path}
+            path={path}
+            exact={exact}
+            render={routerProps => (
+              <Component {...routerProps}{...rest}/>
+            )}
+            />
+        ))}
+        <Route render={props => <NoMatch {...props}/>}/>
+      </Switch>
     </div>
   );
 }
