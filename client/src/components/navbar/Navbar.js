@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
 import { ShoppingCart } from '@material-ui/icons';
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
+import { Link } from 'react-router-dom';
 
 function pxToRem(value) {
   return `${value / 16}rem`;
@@ -26,6 +27,10 @@ const theme = createMuiTheme({
        root:{
            display: 'flex',
            justifyContent: 'space-between'
+       },
+       gutters:{
+           paddingRight: "300px!important",
+           paddingLeft: '200px!important'
        }
     },
     MuiButton:{
@@ -43,9 +48,13 @@ const Navbar = props => {
       <AppBar position="fixed" color="primary" style={{ marginBottom: 10 }}>
         <Toolbar>
           <Typography variant="h4" color="inherit">
-            Products
+            <Link style={{ color: 'white', textDecoration: 'none' }} to="/">Products</Link>
           </Typography>
-        <Button color="inherit" > <ShoppingCart fontSize='large'/> Cart</Button>
+          <Link to="/cart" style={{ color: 'white', textDecoration: 'none' }} > 
+            <Button color="inherit" > 
+              <ShoppingCart fontSize='large'/> My Cart
+            </Button> 
+          </Link>
         </Toolbar>
       </AppBar>
     </MuiThemeProvider>

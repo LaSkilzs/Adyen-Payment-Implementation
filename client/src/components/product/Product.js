@@ -1,5 +1,6 @@
 import React from 'react';
 import { productData } from "../../utility/productData";
+import { Link } from 'react-router-dom';
 // import ProductDetail from './ProductDetail';
 
 import {
@@ -48,6 +49,7 @@ const theme = createMuiTheme({
 });
 
 const Product = () => {
+  console.log(productData)
   function FormRow() {
     return (
       <React.Fragment>
@@ -55,6 +57,7 @@ const Product = () => {
           return (
             <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
               <MuiThemeProvider theme={theme}>
+                <Link to ={{ pathname: "/productDetail/{product.id}", state: {product} }} style={{textDecoration: 'none'}}>
                 <Card>
                     <CardHeader title={product.short}/>
                     <CardMedia
@@ -71,6 +74,7 @@ const Product = () => {
                       </Typography>
                     </CardContent>
                 </Card>
+                </Link>
               </MuiThemeProvider>
             </Grid>
           );
@@ -81,7 +85,6 @@ const Product = () => {
 
   return (
       <div>
-        {/* <Typography variant="h1" component="h2"> Products</Typography> */}
         <Grid
             container
             spacing={4}

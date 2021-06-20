@@ -6,13 +6,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 
 const TAX_RATE = 0.07;
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 100,
+    width: '35vw',
   },
 });
 
@@ -47,7 +46,7 @@ export default function Summary() {
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer>
       <Table className={classes.table} aria-label="spanning table">
         <TableHead>
           <TableRow>

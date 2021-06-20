@@ -5,22 +5,18 @@ import Grid from '@material-ui/core/Grid';
 import Summary from './Summary';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
+  container: {
+      marginTop: '150px',
+      width: '75vw',
+      marginLeft: "250px"
+  }
 }));
 
 export default function Checkout() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={5} className={classes.container}>
         <Grid item xs={6}>
           <Paper className={classes.paper}>Payment API</Paper>
         </Grid>
@@ -28,7 +24,6 @@ export default function Checkout() {
           <Summary  />
         </Grid>
       </Grid>
-    </div>
   );
 }
 
