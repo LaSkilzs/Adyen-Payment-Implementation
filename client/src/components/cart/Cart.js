@@ -10,7 +10,6 @@ import TableRow from '@material-ui/core/TableRow';
 import { Button } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import API from "../../utility/API";
-import { ShortText } from '@material-ui/icons';
 
 
 const useStyles = makeStyles({
