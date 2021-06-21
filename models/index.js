@@ -19,6 +19,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.cart= require("./cart.model.js").sequelize;
-
+db.cart = require("./cart.model.js")
+console.log('db.cart', db.cart)
 module.exports = db;

@@ -1,6 +1,7 @@
+const { cart } = require("../models");
 const db = require("../models");
-const Cart = db.carts;
-const Op = db.Sequelize.Op;
+const Cart = db.Cart;
+
 
 // Create and Save a new cart
 exports.create = (req, res) => {
@@ -26,17 +27,19 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all carts from the database.
-exports.findAll = (req, res) => {
-    Cart.findAll({ attributes: ["id", "productid", "name", "price", "quantity"] })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving cart items."
-        });
-      });
+exports.findAll = (request, response) => {
+  console.log('I was called')
+  console.log('Cart', Cart)
+  console.log(db)
+  try {
+    const carts = Cart.findAll({
+      attributes: ["id", "productid", "name", "price", "quantity"],
+    });
+    response.status(201).send({carts: carts, message: "Cart Items were created"});
+  } catch (e) {
+    console.log(e);
+    response.status(500).send("There are not any items in your cart!");
+  }
 };
 
 

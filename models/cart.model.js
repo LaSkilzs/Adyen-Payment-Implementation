@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER
       }
     });
-  
+  console.log('cart model', cart)
     return Cart;
   };
   
