@@ -38,10 +38,6 @@ function createRow(desc, qty, unit) {
 
 function subtotal(items) {
   return items.map(({ price, quantity }) => price * quantity).reduce((sum, i) => sum + i, 0);
-  // const sum = items.map(({ price, quantity }) => price * quantity )
-  // let total = sum.reduce((acc, val) => {
-  //   return acc + val;
-  // });
 }
 
 function summaryTotals(cartItems){
