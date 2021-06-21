@@ -8,8 +8,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Button } from '@material-ui/core';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
-const TAX_RATE = 0.07;
 
 const useStyles = makeStyles({
   table: {
@@ -21,10 +21,6 @@ const useStyles = makeStyles({
   }
 });
 
-function ccyFormat(num) {
-  return `${num.toFixed(2)}`;
-}
-
 function priceRow(qty, unit) {
   return qty * unit;
 }
@@ -35,21 +31,20 @@ function createRow(desc, qty, unit) {
 }
 
 function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  return items.map(({ price, quantity }) => price * quantity )
 }
 
-const rows = [
-  createRow('Paperclips (Box)', 1, 14.99),
-  createRow('Paper (Case)', 1, 45.99),
-  createRow('Waste Basket', 1, 17.99),
-];
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
-export default function Cart() {
+export default function Cart(props) {
+  const { cartItems } = props;
+  console.log('props', props)
+  console.log('cartItems', cartItems)
   const classes = useStyles();
+
+  const rows = props.cartItems.map(item => { 
+    return createRow(item.name, item.quantity, parseFloat(item.price)); 
+  })
+  const invoiceSubtotal = subtotal(props.cartItems);
+  const invoiceTotal =  invoiceSubtotal;
 
   return (
     <React.Fragment>
@@ -60,7 +55,7 @@ export default function Cart() {
             <TableRow>
                 <TableCell>Desc</TableCell>
                 <TableCell align="right">Qty.</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell align="right">Delete</TableCell>
                 <TableCell align="right">Sum</TableCell>
             </TableRow>
             </TableHead>
@@ -69,26 +64,21 @@ export default function Cart() {
                 <TableRow key={row.desc}>
                 <TableCell>{row.desc}</TableCell>
                 <TableCell align="right">{row.qty}</TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+                <TableCell align="right"><DeleteForeverIcon color="primary"/></TableCell>
+                <TableCell align="right">{row.price}</TableCell>
                 </TableRow>
             ))}
 
             <TableRow>
                 <TableCell rowSpan={3} />
                 <TableCell colSpan={2}>Subtotal</TableCell>
-                <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell>Tax</TableCell>
-                <TableCell align="right">{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
-                <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
+                <TableCell align="right">{invoiceSubtotal}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell rowSpan={3} />
                
                 <TableCell >Total</TableCell>
-                <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
+                <TableCell align="right">{invoiceTotal}</TableCell>
                 <TableCell align="right"> 
                 <Link to="/checkout" style={{textDecoration: 'none', color: 'white'}}>
                     <Button variant="contained" color="primary"> Continue to Checkout</Button>
