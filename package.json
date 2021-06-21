@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/LaSkilzs/Adyen-Payment-Implementation#readme",
   "dependencies": {
+    "@adyen/api-library": "^8.1.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
