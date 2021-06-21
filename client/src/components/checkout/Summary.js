@@ -7,7 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-const TAX_RATE = 0.07;
 
 const useStyles = makeStyles({
   table: {
@@ -15,34 +14,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ccyFormat(num) {
-  return `${num.toFixed(2)}`;
-}
-
-function priceRow(qty, unit) {
-  return qty * unit;
-}
-
-function createRow(desc, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, qty, unit, price };
-}
-
-function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
-}
-
-const rows = [
-  createRow('Paperclips (Box)', 100, 1.15),
-  createRow('Paper (Case)', 10, 45.99),
-  createRow('Waste Basket', 2, 17.99),
-];
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
-export default function Summary() {
+export default function Summary(props) {
+  console.log('summary props', props)
+  const { total, cartItems} = props;
   const classes = useStyles();
 
   return (
@@ -55,15 +29,15 @@ export default function Summary() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.desc}>
-              <TableCell>{row.desc}</TableCell>
-              <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+          {cartItems.map((row, i) => (
+            <TableRow key={i}>
+              <TableCell>{row.description}</TableCell>
+              <TableCell align="right">{row.price}</TableCell>
             </TableRow>
           ))}
           <TableRow>
             <TableCell colSpan={2}>Total</TableCell>
-            <TableCell align="left">{ccyFormat(invoiceTotal)}</TableCell>
+            <TableCell align="left">{total}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

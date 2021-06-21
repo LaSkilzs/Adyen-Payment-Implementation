@@ -33,11 +33,10 @@ class API {
     }
   
     // delete
-    static delete(cart) {
-      fetch(`http://localhost:5000/carts/${cart.id}`, {
+    static delete(id) {
+      fetch(`http://localhost:5000/carts/${id}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(cart)
+        headers: { "Content-Type": "application/json" }
       })
         .then(response => response.json())
         .then(data => {
