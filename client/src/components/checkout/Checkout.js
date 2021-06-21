@@ -12,7 +12,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Checkout() {
+export default function Checkout(props) {
+  console.log('props', props)
+  const { cartItems, total} = props.location.state;
   const classes = useStyles();
 
   return (
@@ -21,7 +23,7 @@ export default function Checkout() {
           <Paper className={classes.paper}>Payment API</Paper>
         </Grid>
         <Grid item xs={6}>
-          <Summary  />
+          <Summary  cartItems={cartItems} total={total}/>
         </Grid>
       </Grid>
   );

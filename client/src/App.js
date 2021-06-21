@@ -3,17 +3,17 @@ import { Switch, Route } from 'react-router-dom';
 import Navbar from  './components/navbar'
 import routes from './routes/Routes';
 import NoMatch from './routes/NoMatch';
-import API from './utility/API';
+// import API from './utility/API';
 
 export default class App extends Component {
 
-  async componentDidMount(){
+  // async componentDidMount(){
 
-    let cart = {productID: 7, name: "IPHONE 8", quantity: 1, price: "999.99"}
-    API.create(cart).then(data => {
-      console.log('data', data);
-    })
-  }
+  //   let cart = {productID: 7, name: "IPHONE 8", quantity: 1, price: "999.99"}
+  //   API.create(cart).then(data => {
+  //     console.log('data', data);
+  //   })
+  // }
   render(){
   return (
     <div>
