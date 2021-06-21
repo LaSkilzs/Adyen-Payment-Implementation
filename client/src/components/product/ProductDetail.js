@@ -35,10 +35,9 @@ const theme = createMuiTheme({
 });
 
 
-
-
 const ProductDetail = props => {
   const {product} = props.location.state;
+
   console.log(product)
   function FormRow() {
     return (
