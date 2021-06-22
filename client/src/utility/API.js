@@ -47,17 +47,46 @@ class API {
       console.log('error', e)
      }
     }
-
-    // getPaymentMethods
-    static async getPaymentMethods(){
-      const response = await fetch('http://localhost:5000/api/getPaymentMethods', { 
+  
+    // Handle Adyen API
+    static async callServer(url, data) {
+      const res = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-    });
-      const data = await response.json();
-      console.log(data);
-      return data;
+        body: data ? JSON.stringify(data) : "",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await res.json();
+      console.log(result);
+      return result;
     }
+
+    static handleServerResponse(res, component) {
+      if (res.action) {
+        component.handleAction(res.action);
+      } else {
+        switch (res.resultCode) {
+          case "Authorised":
+            window.location.href = "/result/success";
+            break;
+          case "Pending":
+          case "Received":
+            window.location.href = "/result/pending";
+            break;
+          case "Refused":
+            window.location.href = "/result/failed";
+            break;
+          default:
+            window.location.href = "/result/error";
+            break;
+        }
+      }
+    }
+
+    
+     
+    
   }
   
   export default API;
