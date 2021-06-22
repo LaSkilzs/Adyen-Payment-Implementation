@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Summary from './Summary';
 import Dropin from '../../utility/Dropin';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -17,13 +18,18 @@ const Checkout = React.forwardRef((props, ref) =>  {
   const { cartItems, total } = props;
   const classes = useStyles();
   console.log('ref', ref);
-  console.log('checkout', Dropin.initiateCheckout());
-  ref ? Dropin.initiateCheckout() :  console.log('ref', ref);
+
+  const focusedRef = !ref ? ref.current.focus : ref;
+ 
+  async function checkoutUI(){
+    return await Dropin.initiateCheckout();
+  }
+
   return (
       <Grid container spacing={5} className={classes.container}>
         <Grid item xs={6}>
-          <h3>Select your payment option</h3>
-          <div id="dropin-container" ref={ref}>
+          <Button onClick={() => ref ? checkoutUI() : "Something is wrong"}> Select your payment option </Button>
+          <div id="dropin-container" ref={focusedRef}>
           </div> 
         </Grid>
         <Grid item xs={6}>

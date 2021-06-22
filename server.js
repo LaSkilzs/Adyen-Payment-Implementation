@@ -3,13 +3,22 @@ const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 const route = require("./routes");
 
+
 const app = express();
 
 var corsOptions = {
   origin: "http://localhost:3000"
 };
-
 app.use(cors(corsOptions));
+
+
+// Parse JSON bodies
+app.use(express.json());
+
+// Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+
+
 
 const db = require("./models");
 db.sequelize.sync();
@@ -26,7 +35,7 @@ db.sequelize.sync();
 // });
 
 const {Client, Config, CheckoutAPI} = require('@adyen/api-library');
-const { uuid } = require("uuidv4");
+const { v4: uuidv4 } = require('uuid');
 
 // Adyen Server Library
 const config = new Config();
@@ -60,16 +69,16 @@ app.post("/api/getPaymentMethods", async (req, res) => {
 });
 
 // Submitting a payment
-app.post("/api/initiatePayment", async (req, res) => {
-  const currency = findCurrency(req.body.paymentMethod.type);
+app.post("/api/initiatePayment", (req, res) => {
+  const currency = findCurrency(req.body.paymentMethod);
   // find shopper IP from request
   const shopperIP = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
   try {
     // unique ref for the transaction
-    const orderRef = uuid();
+    const orderRef = uuidv4();
     // Ideally the data passed here should be computed based on business logic
-    const response = await checkout.payments({
+    const response = checkout.payments({
       amount: { currency, value: 1000 }, // value is 10€ in minor units
       reference: orderRef, // required
       merchantAccount: config.merchantAccount, // required
@@ -103,7 +112,7 @@ app.post("/api/initiatePayment", async (req, res) => {
       paymentStore[orderRef].paymentRef = response.pspReference;
       paymentStore[orderRef].status = response.resultCode;
     }
-    res.json([response, orderRef]); // sending a tuple with orderRef as well to be used in in submitAdditionalDetails if needed
+    return res.json([response, orderRef]); // sending a tuple with orderRef as well to be used in in submitAdditionalDetails if needed
   } catch (err) {
     console.error(`Error: ${err.message}, error code: ${err.errorCode}`);
     res.status(err.statusCode).json(err.message);
@@ -174,6 +183,21 @@ app.all("/api/handleShopperRedirect", async (req, res) => {
     res.redirect(`${originalHost}/status/error?reason=${err.message}`);
   }
 });
+
+function findCurrency(type) {
+  switch (type) {
+    case "wechatpayqr":
+    case "alipay":
+      return "CNY";
+    case "dotpay":
+      return "PLN";
+    case "boletobancario":
+      return "BRL";
+    default:
+      return "EUR";
+  }
+}
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

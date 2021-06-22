@@ -62,6 +62,17 @@ class API {
       return result;
     }
 
+
+    static async handleSubmission(state, component, url) {
+      try {
+        const res = await API.callServer(url, state.data);
+        API.handleServerResponse(res, component);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    
+
     static handleServerResponse(res, component) {
       if (res.action) {
         component.handleAction(res.action);
