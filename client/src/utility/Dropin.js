@@ -9,8 +9,7 @@ import Config from './Config';
         try {
           const configuration =  await Config.checkoutObject();
           const checkout = new AdyenCheckout(configuration);
-          checkout.create("dropin").mount(document.getElementById("#dropin-container"));
-          debugger
+          return await checkout.create("dropin").mount(document.getElementById("dropin-container"));
         } catch (error) {
           console.log('error',error);
         }
