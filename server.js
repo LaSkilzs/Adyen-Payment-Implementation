@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const PORT = process.env.PORT || 5000;
+const dotenv = require("dotenv");
+
 
 const app = express();
 
@@ -17,10 +19,23 @@ app.use(express.json());
 // Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
+if(process.env.NODE_ENV === 'production') {
+  // set static folder
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 // Adyen Payment API Implementation Begins
 const {Client, Config, CheckoutAPI} = require('@adyen/api-library');
 const { v4: uuidv4 } = require('uuid');
+
+// enables environment variables by
+// parsing the .env file and assigning it to process.env
+dotenv.config({
+  path: "./.env",
+});
 
 // Adyen Server Library
 const config = new Config();
@@ -181,7 +196,6 @@ function findCurrency(type) {
       return "EUR";
   }
 }
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
