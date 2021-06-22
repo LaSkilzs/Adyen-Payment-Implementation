@@ -19,21 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-
-const db = require("./models");
-db.sequelize.sync();
-
-// db.sequelize.sync({ force: true }).then(() => {
-//     console.log("Drop and re-sync db.");
-// });
-
-// simple route
-// route(app)
-
-// app.get("/", (req, res) => {
-//   res.json({ message: "Adyen Payment Implementation application." });
-// });
-
+// Adyen Payment API Implementation Begins
 const {Client, Config, CheckoutAPI} = require('@adyen/api-library');
 const { v4: uuidv4 } = require('uuid');
 
@@ -46,7 +32,6 @@ client.setEnvironment("TEST");
 const checkout = new CheckoutAPI(client);
 
 // Adyen Server Method Calls
-
 // in memory store for transaction
 const paymentStore = {};
 const originStore = {};

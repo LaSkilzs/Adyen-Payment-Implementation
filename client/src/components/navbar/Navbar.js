@@ -50,7 +50,7 @@ const Navbar = props => {
           <Typography variant="h4" color="inherit">
             <Link style={{ color: 'white', textDecoration: 'none' }} to="/">Products</Link>
           </Typography>
-          <Link to="/cart" style={{ color: 'white', textDecoration: 'none' }} > 
+          <Link to="/" style={{ color: 'white', textDecoration: 'none' }} > 
             <Button color="inherit" > 
               <ShoppingCart fontSize='large'/> My Cart
             </Button> 
