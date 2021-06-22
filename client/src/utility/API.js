@@ -33,7 +33,8 @@ class API {
     }
   
     // delete
-    static delete(id) {
+   static async delete(id) {
+     try{
       fetch(`http://localhost:5000/carts/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" }
@@ -42,6 +43,20 @@ class API {
         .then(data => {
           console.log(data);
         });
+     }catch(e){
+      console.log('error', e)
+     }
+    }
+
+    // getPaymentMethods
+    static async getPaymentMethods(){
+      const response = await fetch('http://localhost:5000/api/getPaymentMethods', { 
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+    });
+      const data = await response.json();
+      console.log(data);
+      return data;
     }
   }
   

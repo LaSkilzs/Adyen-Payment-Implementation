@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 
+
 const useStyles = makeStyles({
   table: {
     width: '35vw',
@@ -15,7 +16,6 @@ const useStyles = makeStyles({
 });
 
 export default function Summary(props) {
-  console.log('summary props', props)
   const { total, cartItems} = props;
   const classes = useStyles();
 

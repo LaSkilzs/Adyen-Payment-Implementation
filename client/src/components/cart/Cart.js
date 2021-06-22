@@ -56,6 +56,7 @@ export default function Cart(props) {
   const rows = props.cartItems.map(item => { 
     return createRow(item.name, item.quantity, parseFloat(item.price), item.id); 
   })
+  
   const invoiceSubtotal = subtotal(props.cartItems);
 
   return (

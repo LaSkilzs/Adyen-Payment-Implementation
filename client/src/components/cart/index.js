@@ -12,13 +12,11 @@ export default class CartItems extends Component {
     }
     async componentDidMount(){
         API.findAll().then(cartItems => {
-            console.log('cartItmes from call', cartItems)
             this.setState({cartItems})
         })
     }
     render() {
         const { cartItems } = this.state;
-        console.log('cartItems', cartItems)
         return (
             <div>
                 <Cart cartItems={ cartItems }/>

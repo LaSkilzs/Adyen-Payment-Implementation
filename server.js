@@ -22,9 +22,12 @@ db.sequelize.sync();
 // simple route
 route(app)
 
+
 app.get("/", (req, res) => {
   res.json({ message: "Adyen Payment Implementation application." });
 });
+
+
 
 
 app.listen(PORT, () => {
