@@ -8,9 +8,15 @@ const path = require('path');
 const app = express();
 
 // CORS 
-var corsOptions = {
-  origin: "http://localhost:3000"
-};
+
+if(process.env.NODE_ENV === 'production') {
+  var corsOptions = {
+    origin: "https://adyen-api-implementation.herokuapp.com"
+  }} else{
+    var corsOptions = {
+      origin: "http://localhost:3000"
+    }
+  }
 app.use(cors(corsOptions));
 
 

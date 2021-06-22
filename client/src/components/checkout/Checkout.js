@@ -23,6 +23,7 @@ const Checkout = React.forwardRef((props, ref) =>  {
     return await Dropin.initiateCheckout();
   }
 
+  console.log('checkout', ref) 
   return (
       <Grid container spacing={5} className={classes.container}>
         <Grid item xs={6}>

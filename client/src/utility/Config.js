@@ -2,6 +2,7 @@ import API from './API';
 
 class InitiateCheckout {
     static async checkoutObject() {
+      console.log('I am in here')
         try {
           const paymentMethodsResponse = await API.callServer('http://localhost:5000/api/getPaymentMethods');
           const configuration = {

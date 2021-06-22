@@ -20,6 +20,7 @@ export default class PaymentList extends Component {
    }
   
     render() {
+        console.log('index', this.inputRef)
         return (
             <div>
                 <Checkout ref={this.inputRef}/>
