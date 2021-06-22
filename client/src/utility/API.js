@@ -10,6 +10,7 @@ class API {
         },
       });
       const result = await res.json();
+      console.log('result', result)
       return result;
     }
 
