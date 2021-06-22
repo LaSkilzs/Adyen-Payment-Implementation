@@ -18,6 +18,8 @@ const Checkout = React.forwardRef((props, ref) =>  {
   const { cartItems, total } = props;
   const classes = useStyles();
   console.log('ref', ref);
+
+  const focusedRef = !ref ? ref.current.focus : ref;
  
   async function checkoutUI(){
     return await Dropin.initiateCheckout();
@@ -27,7 +29,7 @@ const Checkout = React.forwardRef((props, ref) =>  {
       <Grid container spacing={5} className={classes.container}>
         <Grid item xs={6}>
           <Button onClick={() => ref ? checkoutUI() : "Something is wrong"}> Select your payment option </Button>
-          <div id="dropin-container" ref={ref}>
+          <div id="dropin-container" ref={focusedRef}>
           </div> 
         </Grid>
         <Grid item xs={6}>
