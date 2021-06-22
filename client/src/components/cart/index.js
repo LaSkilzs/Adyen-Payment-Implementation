@@ -12,7 +12,10 @@ export default class CartItems extends Component {
     }
     async componentDidMount(){
         API.findAll().then(cartItems => {
-            this.setState({cartItems})
+            console.log('cartItems', cartItems)
+            
+            const items = !cartItems ? [] : cartItems;
+            this.setState({cartItems: items})
         })
     }
     render() {
