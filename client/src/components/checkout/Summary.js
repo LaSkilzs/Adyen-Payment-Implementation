@@ -15,9 +15,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Summary(props) {
-  const { total, cartItems } = props;
-  const items = !cartItems ? [] : cartItems;
+export default function Summary() {
+  const items = [{description: "Sunglasses", price: "$10.00"}];
   const classes = useStyles();
 
   return (
@@ -38,7 +37,7 @@ export default function Summary(props) {
           ))}
           <TableRow>
             <TableCell colSpan={2}>Total</TableCell>
-            <TableCell align="left">{total}</TableCell>
+            <TableCell align="left">{"$10.00"}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

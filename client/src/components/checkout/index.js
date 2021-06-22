@@ -20,12 +20,9 @@ export default class PaymentList extends Component {
    }
   
     render() {
-        
-        const { paymentTypes } = this.state;
-        const { cartItems, total} = this.props.location.state;
         return (
             <div>
-                <Checkout paymentTypes={paymentTypes}  cartItems={cartItems} total={total}  ref={this.inputRef}/>
+                <Checkout ref={this.inputRef}/>
             </div>
         )
     }
