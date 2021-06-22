@@ -1,64 +1,15 @@
-class API {
-    static async findAll() {
-        try{
-            const response = await fetch("http://localhost:5000/carts");
-            const data = await response.json();
-            console.log('data from class', data);
-            return data;
-
-        }catch(e){
-            console.log('error', e)
-        }
- 
-    }
-  
-    static async create(cart) {
-        try{
-            const response = await fetch("http://localhost:5000/carts", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "cart": {
-                    "productID" : cart.id,
-                    "name" : cart.short,
-                    "price": cart.price,
-                    "quantity": cart.quantity
-                  }})
-            });
-            const data = await response.json();
-            console.log('data from class', data);
-            return data;
-        }catch(e){
-            console.log('error', e)
-        }
-    }
-  
-    // delete
-   static async delete(id) {
-     try{
-      fetch(`http://localhost:5000/carts/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" }
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        });
-     }catch(e){
-      console.log('error', e)
-     }
-    }
-  
+class API { 
     // Handle Adyen API
     static async callServer(url, data) {
       const res = await fetch(url, {
         method: "POST",
+        mode: 'no-cors',
         body: data ? JSON.stringify(data) : "",
         headers: {
           "Content-Type": "application/json",
         },
       });
       const result = await res.json();
-      console.log(result);
       return result;
     }
 
@@ -74,9 +25,6 @@ class API {
     
 
     static handleServerResponse(res, component) {
-      debugger
-      console.log('result', res.action);
-      console.log('code', res.resultCode);
       if (res.action) {
         component.handleAction(res.action);
       } else {
