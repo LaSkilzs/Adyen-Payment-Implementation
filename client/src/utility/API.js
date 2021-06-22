@@ -74,6 +74,9 @@ class API {
     
 
     static handleServerResponse(res, component) {
+      debugger
+      console.log('result', res.action);
+      console.log('code', res.resultCode);
       if (res.action) {
         component.handleAction(res.action);
       } else {

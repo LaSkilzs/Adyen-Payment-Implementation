@@ -25,7 +25,13 @@ const routes = [
         path: '/checkout',
         exact: true,
         component: Checkout,
-    }
+    },
+    {
+        path: '/result/error',
+        exact: true,
+        component: Product,
+    },
+
 ];
 
 export default routes;
