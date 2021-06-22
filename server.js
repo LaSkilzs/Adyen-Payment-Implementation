@@ -130,7 +130,7 @@ app.post("/api/submitAdditionalDetails", async (req, res) => {
     // Return the response back to client
     // (for further action handling or presenting result to shopper)
     const response = await checkout.paymentsDetails(payload);
-
+console.log('response-acion', response.resultCode)
     if (!response.action) {
       paymentStore[req.query.orderRef].paymentRef = response.pspReference;
       paymentStore[req.query.orderRef].status = response.resultCode;
