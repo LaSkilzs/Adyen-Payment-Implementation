@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 
+
 const useStyles = makeStyles({
   table: {
     width: '35vw',
@@ -15,8 +16,8 @@ const useStyles = makeStyles({
 });
 
 export default function Summary(props) {
-  console.log('summary props', props)
-  const { total, cartItems} = props;
+  const { total, cartItems } = props;
+  const items = !cartItems ? [] : cartItems;
   const classes = useStyles();
 
   return (
@@ -29,7 +30,7 @@ export default function Summary(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cartItems.map((row, i) => (
+          {items.map((row, i) => (
             <TableRow key={i}>
               <TableCell>{row.description}</TableCell>
               <TableCell align="right">{row.price}</TableCell>

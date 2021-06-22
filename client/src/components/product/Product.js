@@ -49,7 +49,6 @@ const theme = createMuiTheme({
 });
 
 const Product = () => {
-  console.log(productData)
   function FormRow() {
     return (
       <React.Fragment>
