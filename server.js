@@ -69,7 +69,8 @@ app.post("/api/getPaymentMethods", async (req, res) => {
       channel: "Web",
       merchantAccount: config.merchantAccount,
     });
-    res.json(response);
+    // res.json(response);
+    res.JSON.parse(response);
   } catch (err) {
     console.error(`Error: ${err.message}, error code: ${err.errorCode}`);
     res.status(err.statusCode).json(err.message);
