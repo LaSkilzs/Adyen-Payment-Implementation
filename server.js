@@ -13,15 +13,24 @@ var whitelist = ['http://localhost:3000', 'https://adyen-api-implementation.hero
 console.log('environment', process.env.NODE_ENV === 'production');
 
 // const domainOrigin = process.env.NODE_ENV === 'production' ? whitelist[1] : whitelist[0]
-const domainOrigin = 'https://adyen-api-implementation.herokuapp.com'
+const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
 
 var corsOptions = {
   origin: domainOrigin 
 }
+
  console.log('cors options', corsOptions);
 
 app.use(cors(corsOptions));
 
+// CORS Headers
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Credentials', 'true')
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
+  next();
+});
 
 // parsing the .env file and assigning it to process.env
 dotenv.config({
@@ -54,14 +63,6 @@ const originStore = {};
 /* ################# API ENDPOINTS ###################### */
 app.get("/api/getPaymentDataStore", async (req, res) => res.json(paymentStore));
 
-// CORS Headers
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", '*'); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Credentials', 'true')
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
-  next();
-});
 
 // Get payment methods
 app.post("/api/getPaymentMethods", async (req, res) => {
