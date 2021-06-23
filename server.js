@@ -1,11 +1,37 @@
 const express = require("express");
 const cors = require("cors");
+const corsOptions = require("./config");
 const PORT = process.env.PORT || 5000;
 const dotenv = require("dotenv");
 const path = require('path');
 
 
 const app = express();
+
+// Parse JSON bodies
+app.use(express.json());
+
+// Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+
+// CORS
+app.use(cors(corsOptions));
+
+
+//  CORS Headers
+if (process.env.NODE_ENV !== 'production') {
+	const allowCrossDomain = function(req, res, next) {
+		res.header('Access-Control-Allow-Origin', "*");
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE');
+		res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, x-auth-token');
+		// res.header('Access-Control-Expose-Headers', 'x-auth-token');
+		next();
+	};
+	app.use(allowCrossDomain);
+	if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
+}
+  
+
 
 // parsing the .env file and assigning it to process.env
 dotenv.config({
@@ -18,29 +44,15 @@ dotenv.config({
 // console.log('environment', process.env.NODE_ENV === 'production');
 
 // const domainOrigin = process.env.NODE_ENV === 'production' ? whitelist[1] : whitelist[0]
-const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
+// const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
 
-var corsOptions = {
-  origin: domainOrigin 
-}
+// var corsOptions = {
+//   origin: domainOrigin 
+// }
 
- console.log('cors options', corsOptions);
+//  console.log('cors options', corsOptions);
 
-//  CORS Headers
- app.use(function(req, res, next) {
-   res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
-   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-   res.header('Access-Control-Allow-Credentials', 'true')
-   next();
-  });
-  
-app.use(cors(corsOptions));
 
-// Parse JSON bodies
-app.use(express.json());
-
-// Parse URL-encoded bodies
-app.use(express.urlencoded({ extended: true }));
 
 // Adyen Payment API Implementation Begins
 const {Client, Config, CheckoutAPI} = require('@adyen/api-library');
@@ -207,14 +219,12 @@ function findCurrency(type) {
   }
 }
 
-//build mode -- Anything that doesnt' match the above, send back to index.html
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-  
-  app.get('*', cors(corsOptions), (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', cors(corsOptions), (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
