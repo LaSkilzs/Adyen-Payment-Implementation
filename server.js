@@ -24,7 +24,7 @@ app.use(cors(corsOptions));
 
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Origin", 'https://adyen-api-implementation.herokuapp.com'); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header('Access-Control-Allow-Credentials', 'true')
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
@@ -95,10 +95,10 @@ app.post("/api/initiatePayment", (req, res) => {
         // required for 3ds2 native flow
         allow3DS2: true,
       },
-      origin: "http://localhost:8080", // required for 3ds2 native flow
+      origin: "http://localhost:5000", // required for 3ds2 native flow
       browserInfo: req.body.browserInfo, // required for 3ds2
       shopperIP, // required by some issuers for 3ds2
-      returnUrl: `http://localhost:8080/api/handleShopperRedirect?orderRef=${orderRef}`, // required for 3ds2 redirect flow
+      returnUrl: `http://localhost:5000/api/handleShopperRedirect?orderRef=${orderRef}`, // required for 3ds2 redirect flow
       paymentMethod: req.body.paymentMethod,
       billingAddress: req.body.billingAddress,
     });
@@ -138,7 +138,7 @@ app.post("/api/submitAdditionalDetails", async (req, res) => {
     // Return the response back to client
     // (for further action handling or presenting result to shopper)
     const response = await checkout.paymentsDetails(payload);
-console.log('response-acion', response.resultCode)
+
     if (!response.action) {
       paymentStore[req.query.orderRef].paymentRef = response.pspReference;
       paymentStore[req.query.orderRef].status = response.resultCode;
