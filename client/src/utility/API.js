@@ -1,6 +1,7 @@
 
 class API {
    static async callServer(url, data) {
+     console.log('url', url)
       const res = await fetch(url, {
         method: "POST",
         body: data ? JSON.stringify(data) : "",

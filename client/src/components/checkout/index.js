@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import API from '../../utility/API';
+import CONFIG from '../../config';
 import Checkout from './Checkout';
+
 
 
 export default class PaymentList extends Component {
@@ -16,7 +18,7 @@ export default class PaymentList extends Component {
    async componentDidMount(){
     this.inputRef.current.focus();
 
-    await API.callServer('http://localhost:5000/api/getPaymentMethods').then(data => {
+    await API.callServer(CONFIG.apiUrl + "api/getPaymentMethods").then(data => {
         this.setState({paymentTypes: data});
     })
    }
