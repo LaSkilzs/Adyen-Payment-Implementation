@@ -2,15 +2,17 @@ import axios from 'axios';
 
 class API { 
     // Handle Adyen API
-
     static async callServer(url, data) {
       let bodyData = data ? JSON.stringify(data) : "";
       let config = {
         headers: {
-          "Access-Control-Allow-Origin": "*",
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',
+          'Access-Control-Allow-Credentials': 'true',
           "Content-Type": "application/json"
         }
       }
+      console.log(process.env.NODE_ENV)
       try {
           const res = await axios.post(url, bodyData, config);
           console.log('res data', res);
