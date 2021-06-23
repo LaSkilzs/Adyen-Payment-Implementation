@@ -12,11 +12,11 @@ var whitelist = ['http://localhost:3000', 'https://adyen-api-implementation.hero
 
 console.log('environment', process.env.NODE_ENV === 'production');
 
-// var domainOrigin = process.env.NODE_ENV === 'production' ?  'https://adyen-api-implementation.herokuapp.com': 'http://localhost:3000';
+// const domainOrigin = process.env.NODE_ENV === 'production' ? whitelist[1] : whitelist[0]
 const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
 
 var corsOptions = {
-  origin: domainOrigin,
+  origin: domainOrigin
 }
  console.log('cors options', corsOptions);
 
@@ -77,7 +77,6 @@ app.post("/api/getPaymentMethods", async (req, res) => {
 
 // Submitting a payment
 app.post("/api/initiatePayment", (req, res) => {
-  console.log('I reached here', req)
   const currency = findCurrency(req.body.paymentMethod);
   // find shopper IP from request
   const shopperIP = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
@@ -95,23 +94,21 @@ app.post("/api/initiatePayment", (req, res) => {
         // required for 3ds2 native flow
         allow3DS2: true,
       },
-      origin: "http://localhost:5000", // required for 3ds2 native flow
+      origin: "http://localhost:8080", // required for 3ds2 native flow
       browserInfo: req.body.browserInfo, // required for 3ds2
       shopperIP, // required by some issuers for 3ds2
-      returnUrl: `http://localhost:5000/api/handleShopperRedirect?orderRef=${orderRef}`, // required for 3ds2 redirect flow
+      returnUrl: `http://localhost:8080/api/handleShopperRedirect?orderRef=${orderRef}`, // required for 3ds2 redirect flow
       paymentMethod: req.body.paymentMethod,
       billingAddress: req.body.billingAddress,
     });
+
     const { action } = response;
-    console.log('The action', action)
+
     // save transaction in memory
     paymentStore[orderRef] = {
       amount: { currency, value: 1000 },
       reference: orderRef,
     };
-    console.log('payment order ref', paymentStore[orderRef]);
-    console.log('I reached here after response', response.resultCode);
-    console.log('referer header?', req.headers['referer']);
 
     if (action) {
       const originalHost = new URL(req.headers["referer"]);
@@ -122,7 +119,6 @@ app.post("/api/initiatePayment", (req, res) => {
       paymentStore[orderRef].paymentRef = response.pspReference;
       paymentStore[orderRef].status = response.resultCode;
     }
-
     return res.json([response, orderRef]); // sending a tuple with orderRef as well to be used in in submitAdditionalDetails if needed
   } catch (err) {
     console.error(`Error: ${err.message}, error code: ${err.errorCode}`);
@@ -141,7 +137,7 @@ app.post("/api/submitAdditionalDetails", async (req, res) => {
     // Return the response back to client
     // (for further action handling or presenting result to shopper)
     const response = await checkout.paymentsDetails(payload);
-    console.log('response payload', response)
+console.log('response-acion', response.resultCode)
     if (!response.action) {
       paymentStore[req.query.orderRef].paymentRef = response.pspReference;
       paymentStore[req.query.orderRef].status = response.resultCode;
