@@ -15,6 +15,7 @@ console.log('environment', process.env.NODE_ENV === 'production');
 var corsOptions = {
   origin: process.env.NODE_ENV === 'production' ? whitelist[1] : whitelist[0]
 }
+ console.log('cors options', corsOptions);
  
 app.use(cors(corsOptions));
 
