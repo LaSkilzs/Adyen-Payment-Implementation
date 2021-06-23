@@ -18,7 +18,7 @@ var whitelist = ['http://localhost:3000', 'https://adyen-api-implementation.hero
 console.log('environment', process.env.NODE_ENV === 'production');
 
 // const domainOrigin = process.env.NODE_ENV === 'production' ? whitelist[1] : whitelist[0]
-const domainOrigin = 'http://localhost:3000';
+const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
 
 var corsOptions = {
   origin: domainOrigin 
@@ -27,12 +27,12 @@ var corsOptions = {
  console.log('cors options', corsOptions);
 
  // CORS Headers
- app.use(function(req, res, next) {
-   res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
-   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-   res.header('Access-Control-Allow-Credentials', 'true')
-   next();
-  });
+//  app.use(function(req, res, next) {
+//    res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
+//    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//    res.header('Access-Control-Allow-Credentials', 'true')
+//    next();
+//   });
   
 app.use(cors(corsOptions));
 
@@ -64,6 +64,12 @@ app.get("/api/getPaymentDataStore", async (req, res) => res.json(paymentStore));
 
 // Get payment methods
 app.post("/api/getPaymentMethods", async (req, res) => {
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Credentials', 'true')
+    next();
+   });
   try {
     const response = await checkout.paymentMethods({
       channel: "Web",
@@ -78,6 +84,12 @@ app.post("/api/getPaymentMethods", async (req, res) => {
 
 // Submitting a payment
 app.post("/api/initiatePayment", (req, res) => {
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Credentials', 'true')
+    next();
+   });
   const currency = findCurrency(req.body.paymentMethod);
   // find shopper IP from request
   const shopperIP = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
