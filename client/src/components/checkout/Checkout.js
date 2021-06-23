@@ -16,18 +16,16 @@ const useStyles = makeStyles((theme) => ({
 const Checkout = React.forwardRef((props, ref) =>  {
   const classes = useStyles();
   console.log('ref', ref);
-
-  const focusedRef = !ref ? ref.current.focus : ref;
  
   async function checkoutUI(){
     return await Dropin.initiateCheckout();
   }
-
+  
   return (
       <Grid container spacing={5} className={classes.container}>
         <Grid item xs={6}>
-          <Button onClick={() => ref ? checkoutUI() : "Something is wrong"}> Click to Select Your Payment Option </Button>
-          <div id="dropin-container" ref={focusedRef}>
+          <Button onClick={() => ref ? checkoutUI() : "Something is wrong" }> Click to Select Your Payment Option </Button>
+          <div id="dropin-container" ref={ref}>
           </div> 
         </Grid>
         <Grid item xs={6}>
