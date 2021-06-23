@@ -5,7 +5,7 @@ import Config from './Config';
  class Checkout{
 
     static async initiateCheckout() {
-        console.log("I am here")
+        console.log("Call for Dropin Occured")
         try {
           const configuration =  await Config.checkoutObject();
           const checkout = new AdyenCheckout(configuration);

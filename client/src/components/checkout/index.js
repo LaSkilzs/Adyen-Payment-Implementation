@@ -12,15 +12,17 @@ export default class PaymentList extends Component {
        this.inputRef = React.createRef();
    }
 
+
    async componentDidMount(){
+    this.inputRef.current.focus();
+
     await API.callServer('http://localhost:5000/api/getPaymentMethods').then(data => {
-        console.log('data', data);
         this.setState({paymentTypes: data});
     })
    }
   
     render() {
-        console.log('index', this.inputRef)
+        console.log('DOM node set in Parent', this.inputRef)
         return (
             <div>
                 <Checkout ref={this.inputRef}/>

@@ -8,16 +8,20 @@ const path = require('path');
 const app = express();
 
 // CORS 
+var whitelist = ['http://localhost:3000', 'https://adyen-api-implementation.herokuapp.com']
 
-if(process.env.NODE_ENV === 'production') {
-  var corsOptions = {
-    origin: "https://adyen-api-implementation.herokuapp.com"
-  }} else{
-    var corsOptions = {
-      origin: "http://localhost:3000"
-    }
-  }
+console.log('environment', process.env.NODE_ENV === 'production');
+
+var corsOptions = {
+  origin: process.env.NODE_ENV === 'production' ? whitelist[1] : whitelist[0]
+}
+ 
 app.use(cors(corsOptions));
+
+// parsing the .env file and assigning it to process.env
+dotenv.config({
+  path: "./.env",
+});
 
 
 // Parse JSON bodies
@@ -26,34 +30,19 @@ app.use(express.json());
 // Parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
-if(process.env.NODE_ENV === 'production') {
-  // set static folder
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
-
 // Adyen Payment API Implementation Begins
 const {Client, Config, CheckoutAPI} = require('@adyen/api-library');
 const { v4: uuidv4 } = require('uuid');
 
-// enables environment variables by
-// parsing the .env file and assigning it to process.env
-dotenv.config({
-  path: "./.env",
-});
-
 // Adyen Server Library
 const config = new Config();
-config.apiKey = 'AQEyhmfxK4/JbBdBw0m/n3Q5qf3VaY9UCJ14XWZE03G/k2NFisUQ3oG4gUxAeoX8kJuJ8SMQwV1bDb7kfNy1WIxIIkxgBw==-rvbCbqVGh/HefmNBTUx3Hy2jhcrmc4HUbv+0whHaRaI=-KD,Lt*nb~m4z(2^<';
-config.merchantAccount = 'AdyenRecruitment_NY1';
+config.apiKey = process.env.APIKEY;
+config.merchantAccount = process.env.MERCHANTACCOUNT;
 const client = new Client({ config });
 client.setEnvironment("TEST");
 const checkout = new CheckoutAPI(client);
 
 // Adyen Server Method Calls
-// in memory store for transaction
 const paymentStore = {};
 const originStore = {};
 
@@ -202,6 +191,15 @@ function findCurrency(type) {
     default:
       return "EUR";
   }
+}
+
+//build mode -- Anything that doesnt' match the above, send back to index.html
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  
+  app.get('*', cors(corsOptions), (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
 
 app.listen(PORT, () => {
