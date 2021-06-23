@@ -48,8 +48,8 @@ const { v4: uuidv4 } = require('uuid');
 
 // Adyen Server Library
 const config = new Config();
-config.apiKey = process.env.APIKEY;
-config.merchantAccount = process.env.MERCHANTACCOUNT;
+config.apiKey = 'AQEyhmfxK4/JbBdBw0m/n3Q5qf3VaY9UCJ14XWZE03G/k2NFisUQ3oG4gUxAeoX8kJuJ8SMQwV1bDb7kfNy1WIxIIkxgBw==-rvbCbqVGh/HefmNBTUx3Hy2jhcrmc4HUbv+0whHaRaI=-KD,Lt*nb~m4z(2^<';
+config.merchantAccount = 'AdyenRecruitment_NY1';
 const client = new Client({ config });
 client.setEnvironment("TEST");
 const checkout = new CheckoutAPI(client);
