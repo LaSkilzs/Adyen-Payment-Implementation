@@ -12,8 +12,8 @@ var whitelist = ['http://localhost:3000', 'https://adyen-api-implementation.hero
 
 console.log('environment', process.env.NODE_ENV === 'production');
 
-var domainOrigin = process.env.NODE_ENV === 'production' ?  'https://adyen-api-implementation.herokuapp.com': 'http://localhost:3000'
-// const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
+// var domainOrigin = process.env.NODE_ENV === 'production' ?  'https://adyen-api-implementation.herokuapp.com': 'http://localhost:3000';
+const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
 
 var corsOptions = {
   origin: domainOrigin,
