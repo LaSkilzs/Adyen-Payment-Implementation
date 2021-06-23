@@ -7,6 +7,11 @@ const path = require('path');
 
 const app = express();
 
+// parsing the .env file and assigning it to process.env
+dotenv.config({
+  path: "./.env",
+});
+git
 // CORS 
 var whitelist = ['http://localhost:3000', 'https://adyen-api-implementation.herokuapp.com']
 
@@ -20,6 +25,7 @@ var corsOptions = {
 }
 
  console.log('cors options', corsOptions);
+
  // CORS Headers
  app.use(function(req, res, next) {
    res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
@@ -31,10 +37,6 @@ var corsOptions = {
   
 app.use(cors(corsOptions));
 
-// parsing the .env file and assigning it to process.env
-dotenv.config({
-  path: "./.env",
-});
 
 
 // Parse JSON bodies
