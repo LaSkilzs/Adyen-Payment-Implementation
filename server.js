@@ -13,7 +13,7 @@ var whitelist = ['http://localhost:3000', 'https://adyen-api-implementation.hero
 console.log('environment', process.env.NODE_ENV === 'production');
 
 // const domainOrigin = process.env.NODE_ENV === 'production' ? whitelist[1] : whitelist[0]
-const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
+const domainOrigin = 'https://adyen-api-implementation.herokuapp.com'
 
 var corsOptions = {
   origin: domainOrigin
@@ -27,6 +27,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header('Access-Control-Allow-Credentials', 'true')
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
   next();
 });
 
@@ -142,7 +143,7 @@ console.log('response-acion', response.resultCode)
       paymentStore[req.query.orderRef].paymentRef = response.pspReference;
       paymentStore[req.query.orderRef].status = response.resultCode;
     }
-   return res.json(response);
+    res.json(response);
   } catch (err) {
     console.error(`Error: ${err.message}, error code: ${err.errorCode}`);
     res.status(err.statusCode).json(err.message);
@@ -169,7 +170,6 @@ app.all("/api/handleShopperRedirect", async (req, res) => {
       paymentStore[orderRef].paymentRef = response.pspReference;
       paymentStore[req.query.orderRef].status = response.resultCode;
     }
-    console.log('response code', response.resultCode)
     // Conditionally handle different result codes for the shopper
     switch (response.resultCode) {
       case "Authorised":
