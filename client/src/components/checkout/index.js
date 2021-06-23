@@ -16,7 +16,7 @@ export default class PaymentList extends Component {
    async componentDidMount(){
     this.inputRef.current.focus();
 
-    await API.callServer('https://adyen-api-implementation.herokuapp.com/api/getPaymentMethods').then(data => {
+    await API.callServer('http://localhost:5000/api/getPaymentMethods').then(data => {
         this.setState({paymentTypes: data});
     })
    }

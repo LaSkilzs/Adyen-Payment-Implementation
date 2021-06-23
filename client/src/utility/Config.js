@@ -5,7 +5,7 @@ class InitiateCheckout {
       console.log('Configuration Object creation has begun')
       console.log(process.env.NODE_ENV)
         try {
-          const paymentMethodsResponse = await API.callServer('https://adyen-api-implementation.herokuapp.com/api/getPaymentMethods');
+          const paymentMethodsResponse = await API.callServer('http://localhost:5000/api/getPaymentMethods');
           const configuration = {
             paymentMethodsResponse: paymentMethodsResponse,
             clientKey: 'test_TQPDZU2N3ZAJPEYLCL6HT44RKUQXYWWU',
@@ -25,11 +25,11 @@ class InitiateCheckout {
             },
             onSubmit: (state, component) => {
               if (state.isValid) {
-                API.handleSubmission(state, component, "https://adyen-api-implementation.herokuapp.com/api/initiatePayment");
+                API.handleSubmission(state, component, "http://localhost:5000/api/initiatePayment");
               }
             },
             onAdditionalDetails: (state, component) => {
-              API.handleSubmission(state, component, "https://adyen-api-implementation.herokuapp.com/api/submitAdditionalDetails");
+              API.handleSubmission(state, component, "http://localhost:5000/api/submitAdditionalDetails");
             },
           };
           console.log('Configuration Object Has Been Completed!')
