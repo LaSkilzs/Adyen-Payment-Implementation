@@ -3,7 +3,6 @@ class API {
    static async callServer(url, data) {
       const res = await fetch(url, {
         method: "POST",
-        // mode: 'no-cors',
         body: data ? JSON.stringify(data) : "",
         headers: {
           "Content-Type": "application/json",

@@ -31,13 +31,10 @@ var corsOptions = {
    res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
    res.header('Access-Control-Allow-Credentials', 'true')
-   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
    next();
   });
   
 app.use(cors(corsOptions));
-
-
 
 // Parse JSON bodies
 app.use(express.json());
@@ -67,10 +64,6 @@ app.get("/api/getPaymentDataStore", async (req, res) => res.json(paymentStore));
 
 // Get payment methods
 app.post("/api/getPaymentMethods", async (req, res) => {
-  // res.header ('Access-Control-Allow-Origin', '*')
-  // res.header ('Access-Control-Allow-Credentials', true)
-  // res.header ('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
-  // res.header ('Access-Control-Allow-Headers', 'Content-Type')
   try {
     const response = await checkout.paymentMethods({
       channel: "Web",
@@ -85,11 +78,6 @@ app.post("/api/getPaymentMethods", async (req, res) => {
 
 // Submitting a payment
 app.post("/api/initiatePayment", (req, res) => {
-  // res.header ('Access-Control-Allow-Origin', '*')
-  // res.header ('Access-Control-Allow-Credentials', true)
-  // res.header ('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
-  // res.header ('Access-Control-Allow-Headers', 'Content-Type')
-
   const currency = findCurrency(req.body.paymentMethod);
   // find shopper IP from request
   const shopperIP = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
@@ -107,10 +95,10 @@ app.post("/api/initiatePayment", (req, res) => {
         // required for 3ds2 native flow
         allow3DS2: true,
       },
-      origin: "http://localhost:8080", // required for 3ds2 native flow
+      origin: "http://localhost:5000", // required for 3ds2 native flow
       browserInfo: req.body.browserInfo, // required for 3ds2
       shopperIP, // required by some issuers for 3ds2
-      returnUrl: `http://localhost:8080/api/handleShopperRedirect?orderRef=${orderRef}`, // required for 3ds2 redirect flow
+      returnUrl: `http://localhost:5000/api/handleShopperRedirect?orderRef=${orderRef}`, // required for 3ds2 redirect flow
       paymentMethod: req.body.paymentMethod,
       billingAddress: req.body.billingAddress,
     });
