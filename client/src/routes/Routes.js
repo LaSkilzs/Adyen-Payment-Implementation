@@ -1,5 +1,6 @@
 import Cart from '../components/cart';
 import Checkout from '../components/checkout';
+import ThankYou from '../components/checkout/ThankYou';
 
 
 const routes = [
@@ -16,7 +17,7 @@ const routes = [
     {
         path: '/result/error',
         exact: true,
-        component: Cart,
+        component: ThankYou,
     },
 
 ];
