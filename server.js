@@ -5,7 +5,6 @@ const PORT = process.env.PORT || 5000;
 const dotenv = require("dotenv");
 const path = require('path');
 
-
 const app = express();
 
 // Parse JSON bodies
@@ -24,7 +23,6 @@ if (process.env.NODE_ENV !== 'production') {
 		res.header('Access-Control-Allow-Origin', "*");
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE');
 		res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, x-auth-token');
-		// res.header('Access-Control-Expose-Headers', 'x-auth-token');
 		next();
 	};
 	app.use(allowCrossDomain);
@@ -32,27 +30,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
   
 
-
 // parsing the .env file and assigning it to process.env
 dotenv.config({
   path: "./.env",
 });
-
-// CORS 
-// var whitelist = ['http://localhost:3000', 'https://adyen-api-implementation.herokuapp.com']
-
-// console.log('environment', process.env.NODE_ENV === 'production');
-
-// const domainOrigin = process.env.NODE_ENV === 'production' ? whitelist[1] : whitelist[0]
-// const domainOrigin = 'https://adyen-api-implementation.herokuapp.com';
-
-// var corsOptions = {
-//   origin: domainOrigin 
-// }
-
-//  console.log('cors options', corsOptions);
-
-
 
 // Adyen Payment API Implementation Begins
 const {Client, Config, CheckoutAPI} = require('@adyen/api-library');
@@ -73,7 +54,6 @@ const originStore = {};
 /* ################# API ENDPOINTS ###################### */
 app.get("/api/getPaymentDataStore", async (req, res) => res.json(paymentStore));
 
-
 // Get payment methods
 app.post("/api/getPaymentMethods", async (req, res) => {
   try {
@@ -82,7 +62,6 @@ app.post("/api/getPaymentMethods", async (req, res) => {
       merchantAccount: config.merchantAccount,
     });
     res.json(response);
-    console.log('response', res.json(response))
   } catch (err) {
     console.error(`Error: ${err.message}, error code: ${err.errorCode}`);
     res.status(err.statusCode).json(err.message);
@@ -108,10 +87,10 @@ app.post("/api/initiatePayment", (req, res) => {
         // required for 3ds2 native flow
         allow3DS2: true,
       },
-      origin: "http://localhost:5000", // required for 3ds2 native flow
+      origin: "http://localhost:8080", // required for 3ds2 native flow
       browserInfo: req.body.browserInfo, // required for 3ds2
       shopperIP, // required by some issuers for 3ds2
-      returnUrl: `http://localhost:5000/api/handleShopperRedirect?orderRef=${orderRef}`, // required for 3ds2 redirect flow
+      returnUrl: `http://localhost:8080/api/handleShopperRedirect?orderRef=${orderRef}`, // required for 3ds2 redirect flow
       paymentMethod: req.body.paymentMethod,
       billingAddress: req.body.billingAddress,
     });

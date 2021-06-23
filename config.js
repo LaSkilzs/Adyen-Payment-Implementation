@@ -1,10 +1,7 @@
 
-let whitelist = [
-	'https://adyen-api-implementation.herokuapp.com/',
-    'http://localhost:5000'
-];
+let whitelist = [ 'https://adyen-api-implementation.herokuapp.com/' ];
 
-let apiUrl ='https://adyen-api-implementation.herokuapp.com/';
+let apiUrl = 'https://adyen-api-implementation.herokuapp.com/';
 
 
 if(process.env.NODE_ENV !== 'production'){
@@ -36,6 +33,3 @@ const config = {
 }
 
 module.exports = config;
-
-
-
