@@ -20,17 +20,16 @@ var corsOptions = {
 }
 
  console.log('cors options', corsOptions);
-
+ // CORS Headers
+ app.use(function(req, res, next) {
+   res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
+   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+   res.header('Access-Control-Allow-Credentials', 'true')
+   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
+   next();
+  });
+  
 app.use(cors(corsOptions));
-
-// CORS Headers
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", domainOrigin); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Credentials', 'true')
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
-  next();
-});
 
 // parsing the .env file and assigning it to process.env
 dotenv.config({
@@ -66,6 +65,10 @@ app.get("/api/getPaymentDataStore", async (req, res) => res.json(paymentStore));
 
 // Get payment methods
 app.post("/api/getPaymentMethods", async (req, res) => {
+  // res.header ('Access-Control-Allow-Origin', '*')
+  // res.header ('Access-Control-Allow-Credentials', true)
+  // res.header ('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
+  // res.header ('Access-Control-Allow-Headers', 'Content-Type')
   try {
     const response = await checkout.paymentMethods({
       channel: "Web",
@@ -80,6 +83,11 @@ app.post("/api/getPaymentMethods", async (req, res) => {
 
 // Submitting a payment
 app.post("/api/initiatePayment", (req, res) => {
+  // res.header ('Access-Control-Allow-Origin', '*')
+  // res.header ('Access-Control-Allow-Credentials', true)
+  // res.header ('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
+  // res.header ('Access-Control-Allow-Headers', 'Content-Type')
+
   const currency = findCurrency(req.body.paymentMethod);
   // find shopper IP from request
   const shopperIP = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
