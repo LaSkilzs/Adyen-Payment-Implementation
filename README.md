@@ -8,8 +8,6 @@
 ### Local
 1. npm install  && npm run dev
 2. cd client && npm install && npm start
-3. Must add -- API KEY and Merchant account key (serverside) using .env file
-4. Must add -- Client KEY to Client side in .... src/utility/config.js
 
 ## How to Operate Application
 1. Click "continue to checkout"
